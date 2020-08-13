@@ -15,23 +15,28 @@ LRESULT CALLBACK WindowProc(
   {
   case WM_CREATE:
   {
-    hwndTab = CreateTab(hwnd, 1100, 10, 10, 400, 300, true);
+    RECT rc;
+    GetClientRect(hwnd, &rc);
+    hwndTab = CreateTab(hwnd, 1100, rc.left, rc.top + 20, rc.right - rc.left, rc.bottom - rc.top + 20, true);
 
     TCITEM item;
 
     item.mask = TCIF_IMAGE | TCIF_TEXT;
     item.iImage = -1;
 
-    wchar_t tabName[MAX_PATH] = L"blah!";
+    wchar_t tabName[MAX_PATH] = L"Caja chica";
+    item.pszText = tabName;
     item.pszText = tabName;
     InsertTab(hwndTab, 0, &item);
-    wcscpy(tabName, L"blah!");
+    wcscpy(tabName, L"Requisiciones");
     InsertTab(hwndTab, 1, &item);
 
-
-    int w = 25;
+    int w = 41;
     int h = 100;    
     SendMessage(hwndTab, TCM_SETITEMSIZE, 0, (LPARAM)MAKELPARAM(w, h));
+
+    CreateWindow(WC_BUTTON, L"Press me", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+      110, 50, 75, 25, hwnd, (HMENU)2200, GetModuleHandle(nullptr), nullptr);
 
     return 1;
   }

@@ -14,13 +14,14 @@ HWND CreateTab(
   icex.dwSize = sizeof(icex);
   InitCommonControlsEx(&icex);
 
-  DWORD styles = WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE | TCS_HOTTRACK | TCS_VERTICAL;
+  DWORD styles = WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE | TCS_HOTTRACK | TCS_VERTICAL | TCS_FIXEDWIDTH;
   if(ownerDrawn)
   {
     styles |= TCS_OWNERDRAWFIXED;
   }
   
-  return CreateWindow(
+  return CreateWindowEx(
+    WS_EX_CONTROLPARENT,
     WC_TABCONTROL,
     L"",
     styles,
@@ -30,7 +31,7 @@ HWND CreateTab(
     height,
     parent,
     (HMENU)id,
-    nullptr,
+    GetModuleHandle(nullptr),
     nullptr);
 }
 
