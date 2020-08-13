@@ -15,7 +15,7 @@ LRESULT CALLBACK WindowProc(
   {
   case WM_CREATE:
   {
-    hwndTab = CreateTab(hwnd, 1100, 10, 10, 400, 300);
+    hwndTab = CreateTab(hwnd, 1100, 10, 10, 400, 300, true);
 
     TCITEM item;
 
@@ -42,6 +42,9 @@ LRESULT CALLBACK WindowProc(
     DRAWITEMSTRUCT* dis = (DRAWITEMSTRUCT*)lparam;
     if(dis->itemID != -1)
     {
+      COLORREF selColor;
+      HDC hdc = GetDC(hwndTab);
+
       switch(dis->itemAction)
       {
         case ODA_FOCUS:
@@ -52,14 +55,32 @@ LRESULT CALLBACK WindowProc(
           break;
 
         case ODA_SELECT:
+        {          
+        }
         case ODA_DRAWENTIRE:
         {
-          HDC hdc = GetDC(hwndTab);
           TEXTMETRIC tm;
           GetTextMetrics(hdc, &tm);
           int y = (dis->rcItem.bottom + dis->rcItem.top - tm.tmHeight) / 2;
+          int x = dis->rcItem.left + 5;
+
+          if(dis->itemState & ODS_SELECTED)
+          {
+            SetTextColor(hdc, GetSysColor(COLOR_HIGHLIGHT));
+            x += 2;
+
+            RECT rect = {dis->rcItem.left + 2, dis->rcItem.top, rect.left+2, dis->rcItem.bottom};
+            FillRect(hdc, &rect, GetSysColorBrush(COLOR_HIGHLIGHT));
+          }
+          else
+          {
+            SetTextColor(hdc, GetSysColor(COLOR_WINDOWTEXT));
+          }
+          
           SetBkColor(hdc, GetSysColor(COLOR_BTNFACE));
-          ExtTextOut(hdc, dis->rcItem.left + 10, y, ETO_OPAQUE, &dis->rcItem, L"blah!", 5, 0);
+          
+          TextOut(hdc, x, y, L"blah!", 5);
+          //ExtTextOut(hdc, x, y, ETO_OPAQUE, &dis->rcItem, L"blah!", 5, 0);
           ReleaseDC(hwndTab, hdc);
         }
         break;
