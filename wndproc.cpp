@@ -67,12 +67,12 @@ LRESULT CALLBACK WindowProc(
           TEXTMETRIC tm;
           GetTextMetrics(hdc, &tm);
           int y = (dis->rcItem.bottom + dis->rcItem.top - tm.tmHeight) / 2;
-          int x = dis->rcItem.left + 5;
+          int x = dis->rcItem.left + 7;
 
           if(dis->itemState & ODS_SELECTED)
           {
             SetTextColor(hdc, GetSysColor(COLOR_HIGHLIGHT));
-            x += 2;
+            //x += 2;
 
             RECT rect = {dis->rcItem.left + 2, dis->rcItem.top, rect.left+2, dis->rcItem.bottom};
             FillRect(hdc, &rect, GetSysColorBrush(COLOR_HIGHLIGHT));
