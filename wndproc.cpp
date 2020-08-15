@@ -1,5 +1,6 @@
 #include "wndproc.h"
 #include "tabcontrol.h"
+#include "boxview.h"
 
 HWND hwndTab = nullptr;
 
@@ -18,6 +19,7 @@ LRESULT CALLBACK WindowProc(
     RECT rc;
     GetClientRect(hwnd, &rc);
     hwndTab = CreateTab(hwnd, 1100, rc.left, rc.top + 20, rc.right - rc.left, rc.bottom - rc.top + 20, true);
+    static HWND hwndBox = CreateBoxView(hwndTab, L"Hola mundo!",150, 150, 100, 50, RGB(10, 50, 255));
 
     TCITEM item;
 
