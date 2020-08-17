@@ -19,7 +19,8 @@ LRESULT CALLBACK WindowProc(
     RECT rc;
     GetClientRect(hwnd, &rc);
     hwndTab = CreateTab(hwnd, 1100, rc.left, rc.top + 20, rc.right - rc.left, rc.bottom - rc.top + 20, true);
-    static HWND hwndBox = CreateBoxView(hwndTab, L"Hola mundo!",150, 150, 100, 50, RGB(10, 50, 255));
+    static HWND hwndBox = CreateBoxView(hwndTab, L"Hola custom control!",150, 150, 100, 50, RGB(10, 50, 255));
+    SendMessage(hwndBox, BVM_SETBGCOLOR, (WPARAM)RGB(255, 0, 0), 0);
 
     TCITEM item;
 
