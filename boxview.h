@@ -10,7 +10,7 @@ struct BOXVIEWDATA
   HWND hwnd = nullptr;
   COLORREF fgColor = 0;
   COLORREF bgColor = 0;
-  HFONT font = nullptr;
+  HFONT hfont = nullptr;
 };
 
 // boxview messages
@@ -79,6 +79,7 @@ LRESULT CALLBACK BoxViewWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpara
       pbvd->hwnd = hwnd;
       pbvd->fgColor = GetSysColor(COLOR_WINDOWTEXT);
       pbvd->bgColor = GetSysColor(COLOR_HIGHLIGHT);
+      pbvd->hfont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
       SetWindowText(hwnd, ((CREATESTRUCT*)lparam)->lpszName);
 
       SetWindowLongPtr(hwnd, 0, (LONG_PTR)pbvd);
