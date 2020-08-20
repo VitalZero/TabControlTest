@@ -3,6 +3,13 @@
 #include "boxview.h"
 
 HWND hwndTab = nullptr;
+static HFONT guiFont = nullptr;
+
+BOOL CALLBACK ChangeChildrenFontProc(HWND hwnd, LPARAM lparam)
+{
+  SendMessage(hwnd, WM_SETFONT, (WPARAM)lparam, (LPARAM)TRUE);
+  return TRUE;
+}
 
 LRESULT CALLBACK WindowProc(
   HWND   hwnd,
@@ -40,6 +47,16 @@ LRESULT CALLBACK WindowProc(
 
     CreateWindow(WC_BUTTON, L"Press me", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
       110, 50, 75, 25, hwnd, (HMENU)2200, GetModuleHandle(nullptr), nullptr);
+
+    //Get current font
+    NONCLIENTMETRICS ncm = {0};
+    ncm.cbSize = sizeof(NONCLIENTMETRICS);
+
+    SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
+    guiFont = CreateFontIndirect(&ncm.lfMessageFont);
+
+    EnumChildWindows(hwnd, ChangeChildrenFontProc, (LPARAM)guiFont);
+    //
 
     return 1;
   }
@@ -106,6 +123,7 @@ LRESULT CALLBACK WindowProc(
 
   case WM_DESTROY:
     PostQuitMessage(0);
+    DeleteObject(guiFont);
     return 0;
     break;
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "includes.h"
 #include <tchar.h>
 
@@ -79,12 +80,18 @@ LRESULT CALLBACK BoxViewWndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpara
       pbvd->hwnd = hwnd;
       pbvd->fgColor = GetSysColor(COLOR_WINDOWTEXT);
       pbvd->bgColor = GetSysColor(COLOR_HIGHLIGHT);
-      pbvd->hfont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+      pbvd->hfont = (HFONT)GetStockObject(SYSTEM_FONT);
       SetWindowText(hwnd, ((CREATESTRUCT*)lparam)->lpszName);
 
       SetWindowLongPtr(hwnd, 0, (LONG_PTR)pbvd);
 
       return TRUE;
+    }
+    break;
+    
+    case WM_SETFONT:
+    {
+      pbvd->hfont = (HFONT)wparam;
     }
     break;
 
@@ -150,7 +157,9 @@ static void CustomPaint(HWND hwnd)
     FillRect(hdc, &rc, bgBrush);
     DeleteObject(bgBrush);
   }
+  HFONT oldFont = (HFONT)SelectObject(hdc, pbvd->hfont);
   DrawText(hdc, buffer, -1, &rc, DT_SINGLELINE | DT_CENTER | DT_VCENTER | DT_END_ELLIPSIS);
+  SelectObject(hdc, oldFont);
 
   EndPaint(hwnd, &ps);
 }

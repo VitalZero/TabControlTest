@@ -1,3 +1,4 @@
+#pragma once
 #include "includes.h"
 
 // Definitinons
@@ -20,8 +21,8 @@ ATOM RegisterWC(const wchar_t* className, WNDPROC WindowProc)
   return RegisterClass(&wc);
 }
 
-BOOL CALLBACK ChangeChildrenFontProc(HWND hwnd, LPARAM lparam)
-{
-  SendMessage(hwnd, WM_SETFONT, (WPARAM)lparam, (LPARAM)TRUE);
-  return TRUE;
-}
+// BOOL CALLBACK ChangeChildrenFontProc(HWND hwnd, LPARAM lparam)
+// {
+//   SendMessage(hwnd, WM_SETFONT, (WPARAM)lparam, (LPARAM)TRUE);
+//   return TRUE;
+// }
